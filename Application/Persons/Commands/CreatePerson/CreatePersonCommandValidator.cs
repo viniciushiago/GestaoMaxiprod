@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace GestaoMaxiprod.Application.Persons.Commands.CreatePerson
 {
+    //Validador dos campos do request
     public class CreatePersonCommandValidator : AbstractValidator<CreatePersonCommand>
     {
         public CreatePersonCommandValidator()

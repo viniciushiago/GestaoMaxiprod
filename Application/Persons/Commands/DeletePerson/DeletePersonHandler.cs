@@ -8,27 +8,29 @@ using System.Threading.Tasks;
 
 namespace GestaoMaxiprod.Application.Persons.Commands.DeletePerson
 {
-    public class DeletePersonHandler : IRequestHandler<DeletePersonCommand, Unit>
+    public class DeletePersonHandler : IRequestHandler<DeletePersonCommand>
     {
         private readonly IPersonRepository _personRepository;
 
         public DeletePersonHandler(IPersonRepository personRepository)
         {
+            //Depende apenas de uma interface
             _personRepository = personRepository;
         }
 
-        public async Task<Unit> Handle(DeletePersonCommand request, CancellationToken cancellationToken)
+        public async Task Handle(DeletePersonCommand request, CancellationToken cancellationToken)
         {
-            var person = await _personRepository.GetByIdAsync(request.Id);
+            //Busca a pessoa
+            var person = await _personRepository.GetByIdAsync(request.id);
 
+            //Verifica se a pessoa existe
             if( person is null)
             {
                 throw new ArgumentException("Pessoa não encontrada.");
             }
 
+            //Faz a deleção da pessoa de forma isolada em sua camada
             await _personRepository.RemoveAsync(person);
-
-            return Unit.Value;
         }
     }
 }

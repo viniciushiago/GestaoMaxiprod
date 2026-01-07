@@ -7,13 +7,6 @@ using System.Threading.Tasks;
 
 namespace GestaoMaxiprod.Application.Persons.Commands.DeletePerson
 {
-    public class DeletePersonCommand : IRequest<Unit>
-    {
-        public long Id { get; set; }
-
-        public DeletePersonCommand(long id)
-        {
-            Id = id;
-        }
-    }
+    //DTO para deleção de uma pessoa
+    public record DeletePersonCommand(long id) : IRequest;
 }

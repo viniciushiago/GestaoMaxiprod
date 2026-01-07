@@ -10,6 +10,8 @@ namespace GestaoMaxiprod.Application.Persons.Queries.GetAllPersons
 {
     public class GetAllPersonsQueryHandler : IRequestHandler<GetAllPersonsQuery, List<PersonResponse>>
     {
+        // O handler depende apenas de uma abstração (interface),
+        // mantendo baixo acoplamento com a infraestrutura
         private readonly IPersonRepository _personRepository;
 
         public GetAllPersonsQueryHandler(IPersonRepository personRepository)
@@ -19,14 +21,17 @@ namespace GestaoMaxiprod.Application.Persons.Queries.GetAllPersons
 
         public async Task<List<PersonResponse>> Handle(GetAllPersonsQuery request, CancellationToken cancellationToken)
         {
+            // Busca os dados através do repositório,
+            // sem conhecimento de como os dados são persistidos
             var persons = await _personRepository.GetAllAsync();
 
-            return persons.Select(x => new PersonResponse
-            {
-                Id = x.Id,
-                Name = x.Name,
-                Age = x.Age,
-            }).ToList();
+            // Usa DTOs de resposta para mapear objeto,
+            // evitando mostrar o domínio diretamente para a API
+            return persons.Select(x => new PersonResponse(
+                x.Id,
+                x.Name,
+                x.Age        
+            )).ToList();
         }
     }
 }

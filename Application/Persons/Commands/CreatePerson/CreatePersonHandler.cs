@@ -15,15 +15,16 @@ namespace GestaoMaxiprod.Application.Persons.Commands.CreatePerson
 
         public CreatePersonHandler(IPersonRepository repository)
         {
+            //Dependência apenas de uma interface
             _repository = repository;
         }
 
         public async Task<long> Handle(CreatePersonCommand command, CancellationToken cancellationToken)
         {
             var person = new Person(command.Name, command.Age);
-
+            //Cria a pessoa de forma isolada
             await _repository.AddAsync(person);
-
+            //Retorno apemas ID da pessoa criada
             return person.Id;
         }
     }

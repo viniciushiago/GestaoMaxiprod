@@ -6,10 +6,5 @@ using System.Threading.Tasks;
 
 namespace GestaoMaxiprod.Application.Persons.Queries.GetAllPersons
 {
-    public class PersonResponse
-    {
-        public long Id { get; set; }
-        public string Name { get; set; }
-        public int Age { get; set; }
-    }
+    public record PersonResponse(long Id, string Name, int Age);
 }

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Interfaces.Repositories
 {
+    //Portas que deixam o código com baixo acomplamento em outras camadas
     public interface IPersonRepository
     {
         Task AddAsync(Person person);

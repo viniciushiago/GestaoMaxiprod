@@ -1,4 +1,7 @@
 ﻿using Domain.Interfaces.Repositories;
+using GestaoMaxiprod.Application.Reports.Repositories;
+using GestaoMaxiprod.Domain.Interfaces.Repositories;
+using GestaoMaxiprod.Infrastructure.Persistence.Repositories;
 using Infrastructure.Persistence.Context;
 using Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +26,9 @@ namespace GestaoMaxiprod.Infrastructure
                     configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<IPersonRepository, PersonRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<ITransactionRepository, TransactionRepository>();
+            services.AddScoped<IReportRepository, ReportRepository>();
 
             return services;
         }

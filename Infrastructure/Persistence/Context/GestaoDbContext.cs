@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using GestaoMaxiprod.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace Infrastructure.Persistence.Context
 
         public DbSet<Person> Persons { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

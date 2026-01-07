@@ -7,6 +7,7 @@ using System.Transactions;
 
 namespace Domain.Entities
 {
+    //Entidade de pessoas
     public class Person
     {
         public long Id { get; set; }
@@ -26,14 +27,7 @@ namespace Domain.Entities
             Age = age;
         }
 
-        public void Update(string name, int age)
-        {
-            Validate(name, age);
-
-            Name = name;
-            Age = age;
-        }
-
+        //Validador dos campos de pessoas
         public static void Validate(string name, int age)
         {
             if (string.IsNullOrEmpty(name))

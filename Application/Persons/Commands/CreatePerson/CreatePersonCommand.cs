@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace GestaoMaxiprod.Application.Persons.Commands.CreatePerson
 {
+    //Request para criação das pessoas
     public class CreatePersonCommand : IRequest<long>
     {
         public string Name { get; set; }
