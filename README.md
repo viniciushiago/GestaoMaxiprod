@@ -1,35 +1,48 @@
-📊 GestaoMaxiprod – API de Gestão Financeira
+📊 GestaoMaxiprod
+API de Gestão Financeira — .NET 9
+📌 Visão Geral
 
-Este projeto é uma API de gestão financeira desenvolvida em .NET 9, com foco em boas práticas de arquitetura, organização de código e regras de negócio claras, simulando um cenário real de aplicação corporativa.
+O GestaoMaxiprod é uma API de gestão financeira desenvolvida em .NET 9, com foco em arquitetura limpa, organização de código e regras de negócio bem definidas, simulando um cenário real de aplicação corporativa.
 
-🏗️ Arquitetura Geral
+O projeto foi pensado tanto como base sólida de backend quanto como material de estudo e avaliação técnica.
 
-O projeto foi estruturado utilizando uma combinação de:
+🏗️ Arquitetura Adotada
 
-DDD (Domain-Driven Design)
+Este projeto utiliza uma combinação de padrões amplamente utilizados no mercado:
 
-Arquitetura Hexagonal (Ports & Adapters)
+🧠 DDD (Domain-Driven Design)
 
-CQRS (Command Query Responsibility Segregation)
+🔌 Arquitetura Hexagonal (Ports & Adapters)
 
-Mediator Pattern (MediatR)
+🔄 CQRS (Command Query Responsibility Segregation)
 
-O objetivo principal dessas escolhas é garantir:
+📬 Mediator Pattern (MediatR)
 
-Baixo acoplamento
+🎯 Objetivos dessas escolhas
+
+Baixo acoplamento entre camadas
 
 Alta coesão
 
-Facilidade de manutenção e evolução
+Facilidade de manutenção
 
 Clareza na separação de responsabilidades
 
-📁 Organização dos Projetos
-🧠 Domain
+Evolução segura do código
 
-Responsável por conter o coração da aplicação.
+📁 Estrutura dos Projetos
+GestaoMaxiprod
+│
+├── Domain
+├── Application
+├── Infrastructure
+└── API
 
-Inclui:
+🧠 Domain (Camada de Domínio)
+
+Responsável por conter o núcleo da aplicação.
+
+Contém:
 
 Entidades (Person, Category, Transaction)
 
@@ -37,36 +50,38 @@ Enums (TransactionType, CategoryPurpose)
 
 Regras de negócio
 
-Validações internas das entidades
+Validações e comportamentos das entidades
 
-📌 Regra importante:
-O domínio não depende de nenhum outro projeto.
+📌 Regra de ouro:
+O domínio não depende de nenhuma outra camada.
 
-⚙️ Application
+⚙️ Application (Casos de Uso)
 
-Contém os casos de uso da aplicação.
+Camada responsável por orquestrar os fluxos da aplicação.
 
-Utiliza CQRS, separando claramente:
+Principais responsabilidades:
 
-Commands → operações que alteram estado (Create, Delete)
+Commands (operações de escrita)
 
-Queries → operações de leitura (Listagens, Relatórios)
+Queries (operações de leitura)
 
-Inclui:
-
-Commands e CommandHandlers
-
-Queries e QueryHandlers
+Handlers (execução dos casos de uso)
 
 DTOs / Responses
 
-Interfaces de repositórios (ports)
+Interfaces de repositórios (Ports)
 
-📌 Aqui ficam as orquestrações, não regras de persistência nem detalhes de infraestrutura.
+CQRS aplicado:
 
-🗄️ Infrastructure
+✏️ Commands → criam, alteram ou removem dados
 
-Responsável por detalhes técnicos.
+🔍 Queries → apenas leitura, sem efeitos colaterais
+
+📌 Nenhuma regra de persistência ou detalhe técnico fica aqui.
+
+🗄️ Infrastructure (Infraestrutura)
+
+Camada responsável pelos detalhes técnicos.
 
 Inclui:
 
@@ -74,88 +89,86 @@ Entity Framework Core
 
 DbContext
 
-Mapeamentos (IEntityTypeConfiguration)
+Configurações de entidades (IEntityTypeConfiguration)
 
-Implementações de repositórios
+Implementações dos repositórios
 
 Configuração do PostgreSQL
 
-📌 Este projeto implementa as interfaces definidas na camada Application.
+📌 Implementa as interfaces definidas na camada Application.
 
 🌐 API (Web)
 
 Camada de entrada da aplicação.
 
-Inclui:
+Responsabilidades:
 
 Controllers
 
-Configuração de DI
+Configuração de Dependency Injection
 
-Configuração do pipeline HTTP
+Pipeline HTTP
 
-📌 Controllers não contêm regras de negócio, apenas:
+Integração com MediatR
 
-Recebem a requisição
-
-Enviam comandos/queries via MediatR
-
-Retornam a resposta
+📌 Controllers não possuem regras de negócio
+Apenas recebem a requisição e delegam para a Application.
 
 🔄 CQRS + MediatR
 
-O padrão CQRS foi adotado para separar:
+Cada operação do sistema possui:
 
-Leitura (Queries)
+Um Command ou Query
 
-Escrita (Commands)
+Um Handler responsável pela execução
 
-Cada operação possui:
+Benefícios:
 
-Um objeto de Request (Command ou Query)
+Desacoplamento entre API e lógica de negócio
 
-Um Handler responsável por executar o caso de uso
+Código mais testável
 
-O MediatR é utilizado para:
-
-Desacoplar Controllers da lógica da aplicação
-
-Centralizar o fluxo de execução
-
-Facilitar testes e manutenção
+Fluxos claros e previsíveis
 
 🧩 Repository Pattern
 
-O padrão Repository foi utilizado para:
+Utilizado para abstrair o acesso ao banco de dados.
 
-Abstrair o acesso ao banco de dados
+Características:
 
-Evitar dependência direta do EF Core na Application
+Repositórios retornam entidades
 
-Centralizar operações de persistência
+Não contêm regras de negócio
 
-📌 Importante:
+Encapsulam operações de persistência
 
-Repositórios não contêm regras de negócio
+// O repositório apenas acessa dados,
+// sem aplicar validações ou regras
 
-Apenas operações de leitura e escrita
-
-🧠 Regras de Negócio Implementadas
+🧠 Regras de Negócio
 👤 Pessoa
 
-Possui identificador único
+Identificador único
 
-Contém nome e idade
+Nome e idade
 
-Ao ser removida, todas as transações associadas são excluídas
+Ao ser removida:
+
+❌ Todas as transações associadas são excluídas
 
 Implementado com DeleteBehavior.Cascade
 
 🗂️ Categoria
 
-Pode ser de Despesa, Receita ou Ambas
+Finalidade:
 
-Não pode ser removida caso esteja sendo utilizada por transações
+Receita
+
+Despesa
+
+Ambas
+
+❌ Não pode ser removida se houver transações vinculadas
 
 Implementado com DeleteBehavior.Restrict
 
@@ -167,19 +180,19 @@ Valor deve ser positivo
 
 Menores de idade (< 18 anos) só podem registrar despesas
 
-Tipo da transação deve ser compatível com a finalidade da categoria
+Categoria deve ser compatível com o tipo da transação
 
-Ex.: transação de despesa não pode usar categoria de receita
+Ex.: despesa ❌ categoria de receita
 
-📌 Todas essas regras ficam centralizadas no domínio, garantindo consistência.
+📌 Centralizar essas regras no domínio garante consistência do sistema.
 
 📊 Relatórios
 
-Foi criado um módulo específico para consultas agregadas, como:
+Foi criado um módulo específico para consultas agregadas:
 
-Total de receitas por pessoa
+Totais de receitas por pessoa
 
-Total de despesas por pessoa
+Totais de despesas por pessoa
 
 Saldo individual
 
@@ -191,19 +204,21 @@ Não pertencem a uma entidade específica
 
 Representam consultas de negócio
 
-Por isso ficam organizados em Reports
+Ficam organizados em Reports
 
 🗃️ Entity Framework Core
 
 Utilizado como ORM
 
-Mapeamentos feitos via IEntityTypeConfiguration
+Mapeamento via IEntityTypeConfiguration
 
 Separação clara entre entidade e persistência
 
-Uso de AsNoTracking() em consultas de leitura para melhor performance
+Uso de AsNoTracking() em consultas de leitura
 
-Enums são persistidos como int para:
+Enums
+
+Persistidos como int
 
 Melhor performance
 
@@ -211,19 +226,19 @@ Simplicidade no banco
 
 Facilidade de versionamento
 
-🎯 Decisões Importantes
+🧪 Decisões Técnicas Importantes
 
-Records utilizados para DTOs/Responses
-→ Imutabilidade e clareza de intenção
+🧾 Records para DTOs e Responses
+→ Imutabilidade e clareza
 
-Classes utilizadas para entidades
-→ Comportamento e regras encapsuladas
+🧱 Classes para entidades
+→ Encapsulam comportamento
 
-Handlers enxutos
-→ Regras no domínio, não no application
+🎯 Handlers enxutos
+→ Regras no domínio
 
-Controllers simples
-→ Apenas entrada e saída
+🌐 Controllers simples
+→ Entrada e saída apenas
 
 ✅ Conclusão
 
@@ -231,10 +246,11 @@ Este projeto foi construído com foco em:
 
 Código limpo
 
-Arquitetura consistente
+Arquitetura sólida
 
-Boas práticas amplamente utilizadas no mercado
+Padrões amplamente utilizados no mercado
 
-Facilidade de evolução futura
+Manutenção e evolução contínua
 
-Ele serve tanto como base real de projeto, quanto como material de estudo e avaliação técnica.
+🚀 Uma base realista para aplicações corporativas
+🎓 Um excelente material para estudo e entrevistas técnicas
